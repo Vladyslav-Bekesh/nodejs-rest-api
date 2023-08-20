@@ -31,7 +31,9 @@ userSchema.post("save", handleMogooseError);
 
 
 const registerSchema = Joi.object({
-  subscription: Joi.string().required(),
+  subscription: Joi.string()
+    .valid(...subscriptionEnum)
+    .required(),
   password: Joi.string().min(7).required(),
   email: Joi.string().required(),
 });
