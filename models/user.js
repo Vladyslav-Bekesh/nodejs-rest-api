@@ -3,30 +3,35 @@ const Joi = require("joi");
 
 const { handleMogooseError } = require("../helpers");
 
-const userSchema = Schema({
-  password: {
-    type: String,
-    required: [true, "Set password for user"],
-    minlength: 7,
+const subscriptionEnum  =["starter", "pro", "business"]
+
+const userSchema = Schema(
+  {
+    password: {
+      type: String,
+      required: [true, "Set password for user"],
+      minlength: 7,
+    },
+    email: {
+      type: String,
+      required: [true, "Email is required"],
+      unique: true,
+    },
+    subscription: {
+      type: String,
+      enum: subscriptionEnum,
+      default: "starter",
+    },
+    token: String,
   },
-  email: {
-    type: String,
-    required: [true, "Email is required"],
-    unique: true,
-  },
-  subscription: {
-    type: String,
-    enum: ["starter", "pro", "business"],
-    default: "starter",
-  },
-  token: String,
-});
+  { versionKey: false, timestamps: true }
+);
 
 userSchema.post("save", handleMogooseError);
 
 
 const registerSchema = Joi.object({
-  name: Joi.string().required(),
+  subscription: Joi.string().required(),
   password: Joi.string().min(7).required(),
   email: Joi.string().required(),
 });
