@@ -3,7 +3,7 @@ const { ctrlWrapper, HttpError } = require("../helpers");
 const bcrypt = require("bcrypt");
 
 const register = async (req, res) => {
-  const { email, password, subscription } = req.body;
+  const { email, password } = req.body;
   const user = await User.findOne({ email });
 
   if (user) {
