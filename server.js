@@ -8,7 +8,7 @@ const { PASSWORD, DB_USERNAME, CLASTERNAME, DB_NAME } = process.env;
 
 const DB_HOST = `mongodb+srv://${DB_USERNAME}:${PASSWORD}@${CLASTERNAME}.ohx0zsm.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`;
 mongoose.set("strictQuery", true);
-console.log(DB_HOST);
+
 mongoose
   .connect(DB_HOST)
   .then(() => {
