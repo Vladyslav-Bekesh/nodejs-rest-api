@@ -4,9 +4,12 @@ const { Contact } = require("../models/contact");
 
 const getAll = async (req, res, next) => {
   const { _id: owner } = req.user;
-  const data = await Contact.find({ owner }, "-createdAt -updatedAt").populate(
-    "owner"
-  );
+  const { page, limit } = req.query;
+  const skip = (page - 1) * limit;
+  const data = await Contact.find({ owner }, "-createdAt -updatedAt", {
+    skip,
+    limit,
+  }).populate("owner", "name email");
   res.json(data);
 };
 
@@ -27,7 +30,7 @@ const add = async (req, res, next) => {
   if (contact) {
     throw HttpError(409, "Name already in use");
   }
-  
+
   const data = await Contact.create({ ...req.body, owner });
 
   res.status(201).json(data);
