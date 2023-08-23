@@ -22,4 +22,4 @@ mongoose
     process.exit(1);
   });
 
-  // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZTRkNjFmN2M4YTIwYzlkODRhZDc5ZCIsImlhdCI6MTY5MjcxODY1MywiZXhwIjoxNjkyODAxNDUzfQ.8r3nMZy4OXcmeGQ9oXjBeiTtDnFRLJyEZpGLzskT9Zc
+  

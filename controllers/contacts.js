@@ -1,10 +1,12 @@
 const { HttpError } = require("../helpers/HttpError");
 const { ctrlWrapper } = require("../helpers/ctrlWrapper");
-
 const { Contact } = require("../models/contact");
 
 const getAll = async (req, res, next) => {
-  const data = await Contact.find();
+  const { _id: owner } = req.user;
+  const data = await Contact.find({ owner }, "-createdAt -updatedAt").populate(
+    "owner"
+  );
   res.json(data);
 };
 
@@ -19,7 +21,15 @@ const getById = async (req, res, next) => {
 };
 
 const add = async (req, res, next) => {
-  const data = await Contact.create(req.body);
+  const { _id: owner } = req.user;
+  const contact = await Contact.findOne(req.body);
+
+  if (contact) {
+    throw HttpError(409, "Name already in use");
+  }
+  
+  const data = await Contact.create({ ...req.body, owner });
+
   res.status(201).json(data);
 };
 
@@ -50,17 +60,16 @@ const deleteById = async (req, res, next) => {
 
 const updateFavoriteStatus = async (req, res, next) => {
   const { contactId } = req.params;
-   const data = await Contact.findById(contactId);
+  const data = await Contact.findById(contactId);
 
-   if (!data) {
-     throw HttpError(404, "Not Found");
-   }
+  if (!data) {
+    throw HttpError(404, "Not Found");
+  }
 
-   data.favorite = !data.favorite;
+  data.favorite = !data.favorite;
 
   const updatedData = await data.save();
   res.json(updatedData);
-
 };
 
 module.exports = {

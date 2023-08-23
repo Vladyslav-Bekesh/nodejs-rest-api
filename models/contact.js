@@ -23,6 +23,7 @@ const contactSchema = Schema(
     name: {
       type: String,
       required: [true, "Set name for contact"],
+      unique: true,
     },
     email: {
       type: String,
@@ -30,7 +31,7 @@ const contactSchema = Schema(
     },
     phone: {
       type: String,
-      required: [true, "Set numbers  for contact"],
+      required: [true, "Set numbers for contact"],
     },
     favorite: {
       type: Boolean,
@@ -39,11 +40,12 @@ const contactSchema = Schema(
     owner: {
       type: Schema.Types.ObjectId,
       ref: "user",
+      required: [true, "Set user for contact"],
     },
   },
   { versionKey: false, timestamps: true }
 );
-
+contactSchema.index({ name: 1 });
 contactSchema.post("save", handleMogooseError);
 
 const Contact = model("contacts", contactSchema);
