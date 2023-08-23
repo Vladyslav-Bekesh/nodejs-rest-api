@@ -3,7 +3,7 @@ const Joi = require("joi");
 
 const { handleMogooseError } = require("../helpers");
 
-const subscriptionEnum  =["starter", "pro", "business"]
+const subscriptionEnum = ["starter", "pro", "business"];
 
 const userSchema = Schema(
   {
@@ -22,13 +22,12 @@ const userSchema = Schema(
       enum: subscriptionEnum,
       default: "starter",
     },
-    token: String,
+    token: { type: String, default: "" },
   },
   { versionKey: false, timestamps: true }
 );
 
 userSchema.post("save", handleMogooseError);
-
 
 const registerSchema = Joi.object({
   subscription: Joi.string()
@@ -42,7 +41,7 @@ const loginSchema = Joi.object({
   password: Joi.string().min(7).required(),
   email: Joi.string().required(),
 });
- 
+
 const User = model("user", userSchema);
 
 module.exports = { User, registerSchema, loginSchema };
