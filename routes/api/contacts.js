@@ -4,7 +4,11 @@ const { validateBody } = require("../../middlewares/validateBody");
 const { isValidId } = require("../../middlewares/isValidId");
 const { authenticate } = require("../../middlewares/authenticate");
 
-const { addSchema, updateSchema } = require("../../models/contact");
+const {
+  addSchema,
+  updateSchema,
+  UpdateFavoriteSchema,
+} = require("../../models/contact");
 
 const {
   getAll,
@@ -33,6 +37,12 @@ router.put(
 
 router.delete("/:contactId", authenticate, isValidId, deleteById);
 
-router.patch("/:contactId", authenticate, isValidId, updateFavoriteStatus);
+router.patch(
+  "/:contactId",
+  authenticate,
+  isValidId,
+  validateBody(UpdateFavoriteSchema),
+  updateFavoriteStatus
+);
 
 module.exports = router;

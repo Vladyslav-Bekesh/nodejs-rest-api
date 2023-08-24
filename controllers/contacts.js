@@ -17,9 +17,8 @@ const getAll = async (req, res, next) => {
 const getById = async (req, res, next) => {
   const { contactId } = req.params;
   const data = await Contact.findById({ _id: contactId });
-  console.log(data);
-  console.log(req.user);
-  if (!data || data.owner.$oid === req.user._id.$oid) {
+
+  if (!data || !data.owner.equals(req.user._id)) {
     throw HttpError(404, "Not Found");
   }
 
@@ -47,7 +46,7 @@ const updateById = async (req, res, next) => {
 
   const data = await Contact.findByIdAndUpdate(contactId, body);
 
-  if (!data || data._id === req.user._id) {
+  if (!data || !data.owner.equals(req.user._id)) {
     throw HttpError(404, "Not Found");
   }
   res.json(data );
@@ -57,25 +56,30 @@ const deleteById = async (req, res, next) => {
   const { contactId } = req.params;
   const data = await Contact.findOneAndRemove(contactId);
 
-  if (!data || data._id === req.user._id) {
+  if (!data || !data.owner.equals(req.user._id)) {
     throw HttpError(404, "Not Found");
   }
 
   res.json(data);
 };
 
-const updateFavoriteStatus = async (req, res, next) => {
-  const { contactId } = req.params;
-  const data = await Contact.findById(contactId);
 
-  if (!data || data._id === req.user._id) {
-    throw HttpError(404, "Not Found");
+
+const updateFavoriteStatus = async (req, res) => {
+  if (Object.keys(req.body).length < 1) {
+    throw HttpError(400, "missing fields");
   }
 
-  data.favorite = !data.favorite;
+  const { contactId } = req.params;
 
-  const updatedData = await data.save();
-  res.json(updatedData);
+  const data = await Contact.findOneAndUpdate({ _id: contactId }, req.body, {
+    new: true,
+  });
+ 
+  if (!data || !data.owner.equals(req.user._id)) {
+    throw HttpError(404, "Not Found");
+  }
+  res.status(200).json(data);
 };
 
 module.exports = {

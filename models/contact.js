@@ -18,6 +18,10 @@ const updateSchema = Joi.object({
   favorite: Joi.boolean().default(false),
 });
 
+const UpdateFavoriteSchema = Joi.object({
+  favorite: Joi.boolean().required(),
+});
+
 const contactSchema = Schema(
   {
     name: {
@@ -49,4 +53,4 @@ contactSchema.post("save", handleMogooseError);
 
 const Contact = model("contacts", contactSchema);
 
-module.exports = { Contact, addSchema, updateSchema };
+module.exports = { Contact, addSchema, updateSchema,UpdateFavoriteSchema };
