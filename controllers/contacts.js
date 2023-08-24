@@ -17,7 +17,7 @@ const getAll = async (req, res, next) => {
 const getById = async (req, res, next) => {
   const { contactId } = req.params;
   const data = await Contact.findById({ _id: contactId });
-  if (!data) {
+  if (!data ) {
     throw HttpError(404, "Not Found");
   }
 

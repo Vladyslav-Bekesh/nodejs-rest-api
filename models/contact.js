@@ -23,7 +23,6 @@ const contactSchema = Schema(
     name: {
       type: String,
       required: [true, "Set name for contact"],
-      unique: true,
     },
     email: {
       type: String,
@@ -45,7 +44,7 @@ const contactSchema = Schema(
   },
   { versionKey: false, timestamps: true }
 );
-contactSchema.index({ name: 1 });
+
 contactSchema.post("save", handleMogooseError);
 
 const Contact = model("contacts", contactSchema);
