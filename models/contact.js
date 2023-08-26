@@ -18,6 +18,10 @@ const updateSchema = Joi.object({
   favorite: Joi.boolean().default(false),
 });
 
+const UpdateFavoriteSchema = Joi.object({
+  favorite: Joi.boolean().required(),
+});
+
 const contactSchema = Schema(
   {
     name: {
@@ -30,11 +34,16 @@ const contactSchema = Schema(
     },
     phone: {
       type: String,
-      required: [true, "Set numbers  for contact"],
+      required: [true, "Set numbers for contact"],
     },
     favorite: {
       type: Boolean,
       default: false,
+    },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
+      required: [true, "Set user for contact"],
     },
   },
   { versionKey: false, timestamps: true }
@@ -44,4 +53,4 @@ contactSchema.post("save", handleMogooseError);
 
 const Contact = model("contacts", contactSchema);
 
-module.exports = { Contact, addSchema, updateSchema };
+module.exports = { Contact, addSchema, updateSchema,UpdateFavoriteSchema };
