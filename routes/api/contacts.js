@@ -1,8 +1,8 @@
 const express = require("express");
 
-const { validateBody } = require("../../middlewares/validateBody");
-const { isValidId } = require("../../middlewares/isValidId");
-const { authenticate } = require("../../middlewares/authenticate");
+const { validateBody } = require("../../middlewares");
+const { isValidId } = require("../../middlewares");
+const { authenticate } = require("../../middlewares");
 
 const {
   addSchema,
