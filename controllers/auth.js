@@ -71,11 +71,11 @@ const updateAvatar = async (req, res) => {
   const { _id } = req.user;
   const { path: tempUpload, originalname } = req.file;
   
-  console.log(req.file);
-  const resultUpload = path.join(avatarsDir, originalname );
+  const fileName = `${_id}__${originalname}`;
+  const resultUpload = path.join(avatarsDir, fileName);
 
   await fs.rename(tempUpload, resultUpload, (err) => {
-    console.log(err.message);
+    console.log(err);
   });
 
   const avatarURL = path.join("avatars", originalname );
