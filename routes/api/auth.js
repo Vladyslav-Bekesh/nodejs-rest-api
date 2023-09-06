@@ -7,6 +7,8 @@ const {
   getCurrent,
   logout,
   updateAvatar,
+  verifyEmail,
+  resendVerifyEmail,
 } = require("../../controllers/auth");
 
 const router = express.Router();
@@ -20,5 +22,9 @@ router.get("/current", authenticate, getCurrent);
 router.get("/logout", authenticate, logout);
 
 router.patch("/avatar", authenticate, upload.single("avatar"), updateAvatar);
+
+router.get("/users/verify/:verificationToken", verifyEmail);
+
+router.post("/users/verify", resendVerifyEmail);
 
 module.exports = router;
